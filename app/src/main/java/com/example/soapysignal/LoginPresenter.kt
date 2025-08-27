@@ -37,4 +37,8 @@ class LoginPresenter(private val view: LoginContract.View) : LoginContract.Prese
             view.showPasswordVisible()
         }
     }
+
+    override fun onSignUpClicked() {
+        view.navigateToRegister()
+    }
 }

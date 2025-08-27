@@ -1,11 +1,13 @@
 package com.example.soapysignal
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 
 class LoginActivity : Activity(), LoginContract.View {
@@ -14,6 +16,7 @@ class LoginActivity : Activity(), LoginContract.View {
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
+    private lateinit var btnSignup: TextView
     private lateinit var presenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,7 @@ class LoginActivity : Activity(), LoginContract.View {
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
+        btnSignup = findViewById(R.id.btnSignUp)
 
         presenter = LoginPresenter(this)
 
@@ -33,6 +37,10 @@ class LoginActivity : Activity(), LoginContract.View {
                 etEmail.text.toString().trim(),
                 etPassword.text.toString().trim()
             )
+        }
+
+        btnSignup.setOnClickListener {
+            presenter.onSignUpClicked()
         }
 
         etPassword.setOnTouchListener { _, event ->
@@ -71,6 +79,11 @@ class LoginActivity : Activity(), LoginContract.View {
         etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eyeclose, 0)
         etPassword.setSelection(etPassword.text.length)
+    }
+
+    override fun navigateToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
     }
 
 }
