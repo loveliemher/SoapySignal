@@ -1,16 +1,15 @@
-package com.example.soapysignal
+package com.example.soapysignal.login
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.MotionEvent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import com.example.soapysignal.R
+import com.example.soapysignal.register.RegisterActivity
 
-class LoginActivity : Activity(), LoginContract.View {
+class LoginActivity : Activity(), LoginView {
 
     private lateinit var etHouseCode: EditText
     private lateinit var etEmail: EditText
@@ -23,13 +22,15 @@ class LoginActivity : Activity(), LoginContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val model = LoginModel(this)
+
         etHouseCode = findViewById(R.id.etHouseCode)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnSignup = findViewById(R.id.btnSignUp)
 
-        presenter = LoginPresenter(this)
+        presenter = LoginPresenter(this, model)
 
         btnLogin.setOnClickListener {
             presenter.validateInputs(
@@ -57,6 +58,7 @@ class LoginActivity : Activity(), LoginContract.View {
         }
     }
 
+    // --- View Implementation ---
     override fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
@@ -85,5 +87,4 @@ class LoginActivity : Activity(), LoginContract.View {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
-
 }

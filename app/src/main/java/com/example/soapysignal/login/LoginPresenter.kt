@@ -1,17 +1,15 @@
-package com.example.soapysignal
+package com.example.soapysignal.login
 
 import android.util.Patterns
 
-class LoginPresenter(private val view: LoginContract.View) : LoginContract.Presenter {
-
-    private val accountHouseCode = "abc123"
-    private val accountEmail = "juancruz@gmail.com"
-    private val accountPassword = "123456"
-
-    override fun validateInputs(houseCode: String, email: String, password: String) {
+class LoginPresenter(
+    private val view: LoginView,
+    private val model: LoginModel
+) {
+    fun validateInputs(houseCode: String, email: String, password: String) {
         when {
             houseCode.isEmpty() -> view.showError("Household code is required")
-            houseCode.length < 3 -> view.showError("Household code must be at least 3 characters")
+            houseCode.length < 6 -> view.showError("Household code must be at least 6 characters")
             email.isEmpty() -> view.showError("Email is required")
             !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> view.showError("Invalid email format")
             password.isEmpty() -> view.showError("Password is required")
@@ -20,17 +18,15 @@ class LoginPresenter(private val view: LoginContract.View) : LoginContract.Prese
         }
     }
 
-    override fun validateLogin(houseCode: String, email: String, password: String) {
-        if (houseCode == accountHouseCode &&
-            email == accountEmail &&
-            password == accountPassword) {
+    private fun validateLogin(houseCode: String, email: String, password: String) {
+        if (model.validateAccount(houseCode, email, password)) {
             view.showLoginSuccess()
         } else {
             view.showLoginFailed()
         }
     }
 
-    override fun togglePasswordVisibility(isVisible: Boolean) {
+    fun togglePasswordVisibility(isVisible: Boolean) {
         if (isVisible) {
             view.showPasswordHidden()
         } else {
@@ -38,7 +34,7 @@ class LoginPresenter(private val view: LoginContract.View) : LoginContract.Prese
         }
     }
 
-    override fun onSignUpClicked() {
+    fun onSignUpClicked() {
         view.navigateToRegister()
     }
 }

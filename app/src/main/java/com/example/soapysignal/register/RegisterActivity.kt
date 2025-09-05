@@ -1,11 +1,20 @@
-package com.example.soapysignal
+package com.example.soapysignal.register
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import com.example.soapysignal.login.LoginActivity
+import com.example.soapysignal.R
+import com.example.soapysignal.register.RegisterModel
+import com.example.soapysignal.register.RegisterPresenter
+import com.example.soapysignal.register.RegisterView
 
-class RegisterActivity : Activity(), RegisterContract.View {
+class RegisterActivity : Activity(), RegisterView {
 
     private lateinit var etHouseCode: EditText
     private lateinit var etFullName: EditText
@@ -32,7 +41,8 @@ class RegisterActivity : Activity(), RegisterContract.View {
         btnGoogle = findViewById(R.id.btnGoogle)
         tvSignIn = findViewById(R.id.tvSignIn)
 
-        presenter = RegisterPresenter(this)
+        presenter = RegisterPresenter(this, RegisterModel(this))
+
 
         btnCreateAccount.setOnClickListener {
             presenter.validateInputs(
@@ -52,7 +62,6 @@ class RegisterActivity : Activity(), RegisterContract.View {
         tvSignIn.setOnClickListener {
             presenter.onSignInClick()
         }
-
     }
 
     override fun showError(message: String) {
@@ -62,6 +71,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
     override fun showHouseCodeError(message: String) {
         etHouseCode.error = message
     }
+
     override fun showFullNameError(message: String) {
         etFullName.error = message
     }
@@ -80,6 +90,7 @@ class RegisterActivity : Activity(), RegisterContract.View {
 
     override fun showRegistrationSuccess() {
         Toast.makeText(this, "Account created successfully!", Toast.LENGTH_LONG).show()
+        redirectToSignIn()
     }
 
     override fun showGoogleSignUp() {
@@ -87,9 +98,8 @@ class RegisterActivity : Activity(), RegisterContract.View {
     }
 
     override fun redirectToSignIn() {
-        Toast.makeText(this, "Redirecting to Sign In...", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
-
 }
