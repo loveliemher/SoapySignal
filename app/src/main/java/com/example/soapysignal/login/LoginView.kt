@@ -7,4 +7,5 @@ interface LoginView {
     fun showPasswordVisible()
     fun showPasswordHidden()
     fun navigateToRegister()
+    fun navigateToHome()
 }

@@ -7,6 +7,7 @@ import android.text.InputType
 import android.view.MotionEvent
 import android.widget.*
 import com.example.soapysignal.R
+import com.example.soapysignal.home.HomeActivity
 import com.example.soapysignal.register.RegisterActivity
 
 class LoginActivity : Activity(), LoginView {
@@ -65,6 +66,12 @@ class LoginActivity : Activity(), LoginView {
 
     override fun showLoginSuccess() {
         Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java) // Replace with your real home screen class
+        startActivity(intent)
+        finish() // Optional: prevent going back to Login
     }
 
     override fun showLoginFailed() {

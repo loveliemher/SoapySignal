@@ -21,6 +21,7 @@ class LoginPresenter(
     private fun validateLogin(houseCode: String, email: String, password: String) {
         if (model.validateAccount(houseCode, email, password)) {
             view.showLoginSuccess()
+            view.navigateToHome()
         } else {
             view.showLoginFailed()
         }
